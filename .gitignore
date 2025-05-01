@@ -1,0 +1,70 @@
+# Ignore OS generated files
+Thumbs.db
+.DS_Store
+
+# Ignore IDE/editor folders
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Ignore log files
+*.log
+
+# Ignore environment/config files
+.env
+.env.*
+
+# Ignore backup and temp files
+*~
+*.tmp
+*.bak
+
+# Ignore node_modules (if any JS tooling is used)
+node_modules/
+
+# Ignore composer vendor (if PHP Composer is used)
+vendor/
+
+# Ignore database and cache folders
+cache/
+db/*.sqlite
+db/*.db
+
+# Ignore image/psd/pdf working files
+*.psd
+*.ai
+*.pdf
+
+# Ignore user uploads and generated images
+assets/*.png
+assets/*.jpg
+assets/*.jpeg
+assets/*.gif
+images/
+images/Display/
+images/heroslide/
+images/products/
+images/selected_slabs/
+images/slabs/
+images/slide/
+images/splash/
+video/
+
+# Ignore OpenServer config
+OpenServer/
+
+# Ignore other common folders
+*.zip
+*.tar.gz
+*.rar
+*.7z
+*.tar   
+
+
+# Ignore project-specific files
+_index_header_body.php~
+.cursorignore
+/_
+/_NEW_IMAGES
+/.idea

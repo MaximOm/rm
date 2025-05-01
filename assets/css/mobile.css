@@ -1,0 +1,222 @@
+@charset "UTF-8";
+/*@import "main.css";*/
+
+/*<link rel="stylesheet" href="assets/mobile.css" media="screen and (max-width: 767px)">*/
+
+body{
+
+}
+section {
+    padding: 8px 16px;
+}
+footer#footer {
+    display: flex;
+    height: unset !important;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.card > .description p ,p.description {
+    font-size: 11px;
+    line-height: 1.56;
+}
+.card .description{justify-content: flex-start;padding: 2px 0 2px 12px;order: 1;width: 50%;}
+
+.hero-h1 {
+         width: 100%;
+         font-size: 1.4em;
+         }
+#main-header.scrolled #logotext {
+            transform: translate(-46%, -40%);
+            font-size: 1.56em;
+        }
+#main-header.scrolled #logoboxes {
+        opacity: 0.44;
+        width: 15%;
+        height: 50px;
+        transform: translate(0%,0%);
+        animation: 4s;
+        transition: all 0.7s ease;
+        top: 1.7%;
+        left: 2.5%;
+    }
+
+
+.flex-row {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+}
+
+.mob-off {
+    display: none
+}
+
+body > header {
+    height: 100px;
+    /* padding: 5px; */
+}
+
+.logo {
+    max-width: 60vw;
+    height: 23vh;
+    margin-left: 30px;
+    -webkit-animation: logo linear both;
+    animation: logo linear both;
+}
+
+.col1-3 {
+    width: calc(100% - 10px);
+    margin: 5px;
+}
+.col1-3.card {
+    margin: 0.25em 0;
+}
+
+#menu ul {
+    /* padding: 0; */
+    /* margin: 0; */
+    /* position: fixed; */
+    /* top: 70px; */
+    /* left: calc(50%); */
+    /* transform: translate(-50%); */
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.hamburger span.text-shadow {
+    display: none
+}
+
+.grey_mockup{position:relative;}
+.grey_mockup:before{
+    height: 100%;
+    background: #0d0d0e;
+    width: 100%;
+    position: absolute;
+    margin: auto;
+    content:'';
+    z-index:-1;
+}
+
+.flex-row-mobile {
+    -webkit-box-orient: initial;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+}
+.card picture {
+    width: 100%;
+    min-width: 50%;
+    display: inline-block;
+}
+a.product.product-thumb {
+    width: 50%;
+}
+#product-list a:nth-of-type(even) .card {
+    flex-direction:row-reverse;
+}
+.description p {font-size:15px; line-height:1.44}
+.w-50{width:inherit;}
+#product-list img.product-main-image {
+    max-width: 100%;
+    width: 100%;
+    height:20vh;
+    object-fit:cover;
+    border-radius: 50px;
+}
+
+
+
+
+
+
+
+
+
+
+
+@media (min-width: 375px) {
+    .col1-3 {
+        width: calc(100% - 10px);
+        margin: 5px;
+    }
+    #main-header.scrolled #logotext{
+        font-size: 1.66em;
+    }
+    #main-header.scrolled #logospiral>path{
+        /* stroke:white; */
+        stroke-width:4px;
+    }
+    .slide-desc-norm {
+        width: 87vw;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        padding:200px 0 10vh;
+    }
+
+    
+    h2 {
+        font-size: 2em;
+        line-height: 1.1;
+        text-align: center;
+        margin: 0 0 0.4em;
+    }
+    
+    h3 {
+        font-size: 1.25em;
+        margin: 0 0 0.5em;
+        line-height: 1;
+    }
+
+}
+
+
+@media (min-width: 414px) {
+    #main-header #logoboxes {
+       top: -4%;
+    }
+    #main-header.scrolled #logoboxes {
+        width: 100px;
+        height: 60px;
+        opacity: 1;
+        left: -2%;
+        top: 1%;
+        transform: translate(0%,0%) rotate(0deg);
+    }
+    #main-header #logotext{
+      font-size:2em
+    }
+    #main-header #logospiral {
+      height: 76%;
+    }
+}
+
+
+@media (min-width: 640px) {
+    .container {
+        max-width: 640px
+    }
+}
+
+/* Media query for responsive design */
+@media (max-width: 768px) {
+    header ul li {
+        display: block;
+        margin: 10px 0;
+    }
+
+    footer ul li {
+        display: block;
+        margin: 10px 0;
+    }
+}
+

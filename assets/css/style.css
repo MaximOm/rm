@@ -1,0 +1,551 @@
+/*
+* Marble Slabs E-commerce - Main Stylesheet
+* 
+* This CSS file contains custom styles for the marble slabs website
+* Built on top of Bootstrap 5 framework
+*/
+
+/* ======= GENERAL STYLES ======= */
+:root {
+  --primary-color: #007bff;
+  --secondary-color: #6c757d;
+  --accent-color: #f8f9fa;
+  --text-color: #212529;
+  --light-gray: #f8f9fa;
+  --medium-gray: #e9ecef;
+  --dark-gray: #343a40;
+  --border-color: #dee2e6;
+  --success-color: #28a745;
+  --danger-color: #dc3545;
+  --gold-gradient: radial-gradient(ellipse farthest-corner at right bottom, #FEDB37 0%, #FDB931 8%, #9f7928 30%, #8A6E2F 40%, transparent 80%),
+    radial-gradient(ellipse farthest-corner at left top, #FFFFFF 0%, #FFFFAC 8%, #D1B464 25%, #5d4a1f 62.5%, #5d4a1f 100%);
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: var(--text-color);
+  line-height: 1.6;
+  margin: 0;
+  height: 100vh;
+  width: 100vw;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  overflow-x: hidden;
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+a:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+.gold{
+  background: var(--gold-gradient);
+}
+/* ======= HEADER STYLES ======= */
+.site-header {
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.logo img {
+  max-height: 60px;
+}
+
+.search-form .form-control {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.search-form .btn {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.clip_text {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+#logo-title{
+    text-align: center;
+    /* margin: 30px auto; */
+    max-width: 370px;
+    position: absolute;
+    top: 11vh;
+    /* transform: translate3d(-24vw, -3vh, 0px); */
+    left: 38vw;
+    z-index: 99999999999;
+    transition: all 2s ease-in-out;
+}
+.moved  #logo-title{
+    transform: translate3d(-27vw, -6.1vh, 0px);
+    max-width: 270px;
+}
+#logo-title img{
+    width: 100%;
+}
+a{
+    color: inherit;
+}
+#slogan{
+    text-align: left;
+    /*margin: 10px auto;*/
+    max-width: 47%;
+    position: absolute;
+    left: 2%;
+    bottom: 15vh;
+}
+#slogan img{
+    width: 100%;
+}
+.slogan2{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    color: #fff;
+    font-size: 30px;
+    font-weight: 600;
+    text-align: center;
+}
+/* ======= HERO SECTION ======= */
+.hero-section {
+  position: relative;
+  background-color: var(--dark-gray);
+  color: white;
+  overflow: hidden;
+}
+
+.hero-slide {
+  position: relative;
+  height: 500px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+}
+
+.hero-slide::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.4);
+}
+
+.hero-content {
+  position: relative;
+  max-width: 600px;
+  z-index: 1;
+}
+
+.hero-content h1 {
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.hero-content p {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+}
+
+@font-face {
+  font-family: 'Century Gothic';
+  font-stretch: 90% 100%;
+  font-style: normal;
+  font-weight: normal;
+  src: url(/assets/font/centurygothic.ttf) format('truetype');
+  font-display: swap;
+}
+body {
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    animation: bgr-home;
+    animation-duration: 30s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    overflow: hidden;
+    font-family: "Century Gothic", sans-serif;
+}
+
+@keyframes bgr-home {
+    from {
+        background-size: 108%;
+    }
+    to {
+        background-size: 111%;
+    }
+}
+#logo {
+    transition: all 2s ease-in-out;
+    position: absolute;
+    top: 52px;
+    left: 37vh;
+    /* transform: translate3d(-24vw, -4vh,0); */
+    max-width: 110px;
+    z-index: 9999999999;
+}
+.moved #logo{
+    transform: translate3d(-23vw, -4vh,0);
+    max-width: 66px;
+}
+#logo img {
+    width: 100%;
+}
+.menu {
+    position: absolute;
+    top: 50%;
+    right: 0%;
+    transform: translate(-50%, -50%);
+    z-index: 999999999999;
+}
+
+.menu li {
+    list-style: none;
+    font-size: 24px;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-align: right;
+}
+
+.menu ul {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    distribution: column;
+    font-weight: 900;
+    row-gap: 2em;
+}
+.map {
+    /*background-image: url(/images/sea-mask2.png);*/
+    background-image: url("/images/map.jpg");
+    background-size: 200vw;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: -0px;
+    left: -0px;
+    animation: bgr-home;
+    animation-delay: 10s;
+    z-index: -1;
+    bottom: -20px;
+    height: calc(100vh);
+    width: calc(100vw);
+    transition: all 1s ease-in-out;
+}
+#water{
+    top:0;
+    left:0;
+    background-image: url("/images/water.png");
+    background-position: left top;
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 51vw;
+    height: 51vh;
+    z-index: -16;
+    position: absolute;
+    max-width: 50vw;
+    max-height:50vh;
+    transform: translate3d(-60vw, -60vh, 0px);
+    transition: all 2s ease-in-out;
+}
+#water.available{
+    filter: url(#turbulence);
+    transform: translate3d(-1vw,-1vh, 0px);
+    z-index:1;
+}
+
+
+section#quarry {
+    left:0;
+    top: 0;
+    bottom: 0;
+    position: absolute;
+    transform: translate3d(-100vw, 100vh, 0px);
+    width:100vw;
+    height:100vh;
+    opacity: 0;
+    z-index: 1;
+    transition: all 2s ease-in-out;
+}
+
+section#quarry.available {
+    transform: translate3d(0,0, 0px);
+    z-index:1;
+    opacity: 1;
+}
+video#video {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    background: black;
+    /* position: absolute; */
+}
+
+
+
+
+
+
+.filter-outline-black {
+    filter: drop-shadow(1px 1px 1.5px #00000077)
+    drop-shadow(-1px -1px 1.5px #00000077)
+    drop-shadow(1px -1px 1.5px #00000077)
+    drop-shadow(-1px 1px 1.5px #00000077);
+}
+
+.filter-outline-black {
+    filter: drop-shadow(1px 1px 1.5px rgba(0, 0, 0, 0.33))
+    drop-shadow(-1px -1px 1.5px #00000077)
+    drop-shadow(1px -1px 1.5px #00000077)
+    drop-shadow(-1px 1px 1.5px #00000077);
+}
+
+
+.outline_black{
+    text-shadow:    -1px -1px 0.2em rgba(0, 0, 0, 0.2),
+    -1px 0px 0.2em  rgba(0, 0, 0, 0.2),
+    -1px 1px 0.2em  rgba(0, 0, 0, 0.2),
+    0px 0px 0.3em   rgba(0, 0, 0, 0.2),
+    0px 1px 0.2em   rgba(0, 0, 0, 0.2),
+    0px -1px 0.2em  rgba(0, 0, 0, 0.2),
+    1px 0px 0.2em   rgba(0, 0, 0, 0.2),
+    1px 1px 0.2em   rgba(0, 0, 0, 0.2),
+    1px -1px 0.2em  rgba(0, 0, 0, 0.2);
+}
+
+/* ======= PRODUCT CARDS ======= */
+.product-card {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: none;
+  border-radius: 0.375rem;
+  overflow: hidden;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+}
+
+.product-image {
+  overflow: hidden;
+  position: relative;
+}
+
+.product-image img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.product-card:hover .product-image img {
+  transform: scale(1.05);
+}
+
+.product-title a {
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+.product-title a:hover {
+  color: var(--primary-color);
+}
+
+.product-price {
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.golden-text-bgr {
+  background-image: linear-gradient(to bottom, #c18e61, #c49366, #cb9f76, #d7b590, #e7d4b4, #f9f3db);
+  /* background-image: linear-gradient(to bottom, #ffd700, #ffcc00, #ffb400, #ffa000, #ff8c00); */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  text-shadow: unset !important;
+}
+
+.golden-text-bgr.horizontal {
+  background-image: linear-gradient(to right, #c18e61, #c49366, #cb9f76, #d7b590, #e7d4b4, #f9f3db);
+}
+
+
+
+
+
+/* ======= PRODUCT DETAIL PAGE ======= */
+.product-gallery .main-image {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  border-radius: 0.375rem;
+}
+
+.product-gallery .main-image img {
+  cursor: zoom-in;
+}
+
+.gallery-thumbs .thumbnail {
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: 0.375rem;
+  overflow: hidden;
+  transition: border-color 0.3s ease;
+}
+
+.gallery-thumbs .thumbnail.active {
+  border-color: var(--primary-color);
+}
+
+.gallery-thumbs .thumbnail img {
+  width: 100%;
+  height: 80px;
+  object-fit: cover;
+}
+
+/* ======= FOOTER ======= */
+.site-footer {
+  background-color: var(--dark-gray);
+  color: #fff;
+}
+
+.footer-links li {
+  margin-bottom: 0.5rem;
+}
+
+.footer-links a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+.footer-contact li {
+  margin-bottom: 0.75rem;
+}
+
+.social-links a {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  text-align: center;
+  background: rgba(255,255,255,0.1);
+  border-radius: 50%;
+  transition: background 0.3s ease;
+}
+
+.social-links a:hover {
+  background: rgba(255,255,255,0.2);
+  text-decoration: none;
+}
+
+/* ======= RESPONSIVE ADJUSTMENTS ======= */
+@media (max-width: 767.98px) {
+  .hero-slide {
+    height: 400px;
+  }
+  
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+  
+  .hero-content p {
+    font-size: 1rem;
+  }
+  
+  .product-image img {
+    height: 200px;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .hero-slide {
+    height: 300px;
+  }
+  
+  .product-image img {
+    height: 180px;
+  }
+  
+  .gallery-thumbs .thumbnail img {
+    height: 60px;
+  }
+}
+
+@media (max-width: 450px) {
+  body {
+    animation: none;
+    background-size: 470%;
+  }
+  
+  #logo{
+    top: 4%;
+    width: 25vw;
+    text-align: center;
+    left: 5%;
+    transform: none;
+  }
+  
+  #logo-title{
+    max-width: 60vw;
+    top: 10vh;
+    left: 33vw;
+  }
+  
+  .menu{
+    top: 35vh;
+    right: 10%;
+    filter: drop-shadow(3px 1px 2px black);
+    transform: none;
+    display: none;
+  }
+  
+  .menu li{
+    font-size: 20px;
+  }
+  
+  #slogan{
+    max-width: 88vw;
+    left: 6vw;
+    bottom: 6vh;
+  }
+}
+
+/* ======= UTILITY CLASSES ======= */
+.section-title {
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -10px;
+  width: 50px;
+  height: 3px;
+  background-color: var(--primary-color);
+  transform: translateX(-50%);
+}
