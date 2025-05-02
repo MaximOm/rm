@@ -6,15 +6,16 @@
  * establishes database connections, and sets up essential components.
  */
 
-// Define application path if not already defined
-if (!defined('APP_PATH')) {
-    define('APP_PATH', dirname(__DIR__));
-}
+// Prevent direct access to this file
+defined('SECURE_ACCESS') or define('SECURE_ACCESS', true);
 
-// Define initialization constant to prevent direct access to config
-if (!defined('APP_INITIALIZED')) {
-    define('APP_INITIALIZED', true);
-}
+// Define initialization constant to prevent direct access to included files
+defined('APP_INITIALIZED') or define('APP_INITIALIZED', true);
+
+// Define application path constants
+define('APP_PATH', dirname(__DIR__));
+define('INCLUDES_PATH', APP_PATH . '/includes');
+define('CONFIG_PATH', APP_PATH . '/config');
 
 // Start or resume session if not already started
 if (session_status() == PHP_SESSION_NONE) {
@@ -25,28 +26,35 @@ if (session_status() == PHP_SESSION_NONE) {
 if (defined('APP_ENV') && APP_ENV === 'development') {
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
 } else {
     error_reporting(0);
     ini_set('display_errors', 0);
 }
 
+// Set default timezone
+date_default_timezone_set('UTC');
+
 // Load configuration - updated path to match new structure
-if (file_exists(APP_PATH . '/config/config.php')) {
-    require_once APP_PATH . '/config/config.php';
+if (file_exists(CONFIG_PATH . '/config.php')) {
+    require_once CONFIG_PATH . '/config.php';
 } else {
     // Fallback to old location for backward compatibility during migration
-    require_once APP_PATH . '/includes/config.php';
+    require_once INCLUDES_PATH . '/config.php';
 }
+
+// Load helper functions
+require_once INCLUDES_PATH . '/functions.php';
 
 // Load database connection
-require_once APP_PATH . '/includes/db_connection.php';
+require_once INCLUDES_PATH . '/db_connection.php';
 
-// Load database status checker
-if (file_exists(APP_PATH . '/includes/db_status.php')) {
-    require_once APP_PATH . '/includes/db_status.php';
+// Load database status checker if it exists
+if (file_exists(INCLUDES_PATH . '/db_status.php')) {
+    require_once INCLUDES_PATH . '/db_status.php';
 }
 
-// Define common template paths - ensure directories exist
+// Define common template paths
 define('TEMPLATE_PATH', APP_PATH . '/templates');
 define('LAYOUT_PATH', TEMPLATE_PATH . '/layouts');
 define('COMPONENT_PATH', TEMPLATE_PATH . '/components');
@@ -60,17 +68,14 @@ foreach ($templateDirs as $dir) {
     }
 }
 
-// Load helper functions
-require_once APP_PATH . '/includes/functions.php';
-
 // Set up controllers directory path
-define('CONTROLLER_PATH', APP_PATH . '/includes/controllers');
+define('CONTROLLER_PATH', INCLUDES_PATH . '/controllers');
 if (!is_dir(CONTROLLER_PATH)) {
     mkdir(CONTROLLER_PATH, 0755, true);
 }
 
 // Models directory
-define('MODEL_PATH', APP_PATH . '/includes/models');
+define('MODEL_PATH', INCLUDES_PATH . '/models');
 if (!is_dir(MODEL_PATH)) {
     mkdir(MODEL_PATH, 0755, true);
 }
@@ -134,7 +139,6 @@ function renderPage($template, $variables = [], $layout = 'default') {
     exit;
 }
 
-
 /**
  * Redirect to another URL with optional flash message
  * 
@@ -156,7 +160,13 @@ function redirect($url, $message = '', $type = 'info', $statusCode = 302) {
 }
 
 // Initialize database connection
-$db = Database::getInstance();
+if (class_exists('Database')) {
+    $db = Database::getInstance();
+} else {
+    // Log the error but don't die - this allows the application to continue
+    // even if database is not available (useful for installation pages)
+    error_log('Database class not found. Some functionality may be limited.');
+}
 
 /**
  * Check if the database is set up, redirect to installer if not
@@ -165,5 +175,8 @@ if (function_exists('isDatabaseSetup') && !isDatabaseSetup() && basename($_SERVE
     redirect('/install.php', 'Please complete the installation first.', 'warning');
 }
 
-// Load any additional application components
-// This can be extended as needed for plugins, modules, etc.
+// Register shutdown function for cleanup tasks
+register_shutdown_function(function() {
+    // Perform any cleanup tasks here
+    // For example: close database connections, log execution time, etc.
+});

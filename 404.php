@@ -23,10 +23,10 @@ include 'section/header.php';
                     Sorry, the page you requested could not be found.
                 </div>
                 <div class="error-actions">
-                    <a href="index.php" class="btn btn-primary btn-lg">
+                    <a href="/" class="btn btn-primary btn-lg">
                         <i class="fas fa-home me-2"></i>Back to Homepage
                     </a>
-                    <a href="products.php" class="btn btn-outline-secondary btn-lg ms-2">
+                    <a href="/products" class="btn btn-outline-secondary btn-lg ms-2">
                         <i class="fas fa-cube me-2"></i>View Products
                     </a>
                 </div>
@@ -49,7 +49,7 @@ include 'section/header.php';
                                 // Get some categories to display
                                 $popular_cats = get_categories();
                                 foreach(array_slice($popular_cats, 0, 5) as $cat) {
-                                    echo '<li><a href="products.php?category=' . $cat['id'] . '">' . htmlspecialchars($cat['name']) . '</a></li>';
+                                    echo '<li><a href="/products?category=' . $cat['id'] . '">' . htmlspecialchars($cat['name']) . '</a></li>';
                                 }
                                 ?>
                             </ul>
@@ -57,17 +57,17 @@ include 'section/header.php';
                         <div class="col-md-6">
                             <h4 class="h6">Important Pages</h4>
                             <ul>
-                                <li><a href="index.php">Home</a></li>
-                                <li><a href="products.php">All Products</a></li>
-                                <li><a href="contacts.php">Contact Us</a></li>
-                                <li><a href="about.php">About Us</a></li>
-                                <li><a href="gallery.php">Gallery</a></li>
+                                <li><a href="/">Home</a></li>
+                                <li><a href="/products">All Products</a></li>
+                                <li><a href="/contacts">Contact Us</a></li>
+                                <li><a href="/about">About Us</a></li>
+                                <li><a href="/gallery">Gallery</a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
                 <div class="card-footer bg-white">
-                    <form action="products.php" method="get" class="d-flex">
+                    <form action="/products" method="get" class="d-flex">
                         <input type="text" name="search" class="form-control" placeholder="Search products...">
                         <button type="submit" class="btn btn-primary ms-2">
                             <i class="fas fa-search"></i>

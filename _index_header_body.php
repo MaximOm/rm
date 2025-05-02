@@ -46,10 +46,10 @@
             <div class="close" id="menu-close"></div>
             <ul>
                 <li><a href="/">Home</a></li>
-                <li><a href="/#about">About Us</a></li>
+                <li><a href="/about">About Us</a></li>
                 <li><a href="/products">Products</a></li>
-                <li><a href="/gallery">Gallery</a></li>
-                <li><a href="/#contacts">Contacts</a></li>
+                <li><a href="/categories">Browse Categories</a></li>
+                <li><a href="/contacts">Contact Us</a></li>
             </ul>
         </nav>
 

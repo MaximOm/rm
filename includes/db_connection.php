@@ -1,8 +1,10 @@
 <?php
 /**
- * Database Connection
+ * Database Connection Handler
+ * 
  * Provides a consistent connection to the database across all files
- * with enhanced security features using the Singleton pattern
+ * with enhanced security features using the Singleton pattern and
+ * improved error handling capabilities.
  */
 
 // Prevent direct access to this file
@@ -11,31 +13,54 @@ if (!defined('APP_INITIALIZED')) {
     require_once __DIR__ . '/config.php';
 }
 
+// Define error handling constants if not already defined
+if (!defined('DEBUG_MODE')) {
+    define('DEBUG_MODE', false);
+}
+
 /**
  * Database class for managing database connections and operations
  */
 class Database {
     private static $instance = null;
     private $connection;
+    private $connected = false;
+    private $lastError = '';
     
     /**
      * Private constructor to prevent direct instantiation
      */
     private function __construct() {
         try {
+            // Get port from config if defined, otherwise use default
+            $port = defined('DB_PORT') ? DB_PORT : 3306;
+            
             // Create connection
-            $this->connection = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+            $this->connection = new mysqli(
+                DB_SERVER, 
+                DB_USERNAME, 
+                DB_PASSWORD, 
+                DB_NAME,
+                $port
+            );
             
             // Check connection
             if ($this->connection->connect_error) {
-                throw new Exception("Database connection failed: " . $this->connection->connect_error);
+                $this->lastError = "Database connection failed: " . $this->connection->connect_error;
+                throw new Exception($this->lastError);
             }
             
             // Set charset
             $this->connection->set_charset("utf8mb4");
+            $this->connected = true;
         } catch (Exception $e) {
             error_log($e->getMessage());
             $this->connection = null;
+            
+            // Display error message if in debug mode
+            if (defined('DEBUG_MODE') && DEBUG_MODE) {
+                echo "Database Error: " . $e->getMessage();
+            }
         }
     }
     
@@ -66,7 +91,16 @@ class Database {
      * @return bool - true if connected, false otherwise
      */
     public function isConnected() {
-        return ($this->connection && !$this->connection->connect_error);
+        return $this->connected;
+    }
+    
+    /**
+     * Get the last error message
+     * 
+     * @return string - Last error message
+     */
+    public function getLastError() {
+        return $this->lastError;
     }
     
     /**
@@ -138,7 +172,8 @@ class Database {
     public function query($sql, $params = []) {
         // If connection is not available, return false
         if (!$this->connection) {
-            error_log("Database query error: Connection not established");
+            $this->lastError = "Database query error: Connection not established";
+            error_log($this->lastError);
             return false;
         }
         
@@ -146,13 +181,15 @@ class Database {
             if (empty($params)) {
                 $result = $this->connection->query($sql);
                 if (!$result) {
-                    throw new Exception("Query error: " . $this->connection->error . " in query: " . $sql);
+                    $this->lastError = "Query error: " . $this->connection->error . " in query: " . $sql;
+                    throw new Exception($this->lastError);
                 }
                 return $result;
             } else {
                 $stmt = $this->connection->prepare($sql);
                 if (!$stmt) {
-                    throw new Exception("Prepare error: " . $this->connection->error . " in query: " . $sql);
+                    $this->lastError = "Prepare error: " . $this->connection->error . " in query: " . $sql;
+                    throw new Exception($this->lastError);
                 }
                 
                 $types = '';
@@ -167,7 +204,8 @@ class Database {
                 $stmt->execute();
                 
                 if ($stmt->errno) {
-                    throw new Exception("Execute error: " . $stmt->error);
+                    $this->lastError = "Execute error: " . $stmt->error;
+                    throw new Exception($this->lastError);
                 }
                 
                 $result = $stmt->get_result();
@@ -177,6 +215,12 @@ class Database {
             }
         } catch (Exception $e) {
             error_log($e->getMessage());
+            
+            // Display error message if in debug mode
+            if (defined('DEBUG_MODE') && DEBUG_MODE) {
+                echo "Database Query Error: " . $e->getMessage();
+            }
+            
             return false;
         }
     }
@@ -225,6 +269,46 @@ class Database {
         if ($this->connection) {
             $this->connection->close();
             $this->connection = null;
+            $this->connected = false;
+        }
+    }
+    
+    /**
+     * Reconnect to the database if connection was lost
+     * 
+     * @return bool - true if reconnected successfully, false otherwise
+     */
+    public function reconnect() {
+        $this->close();
+        
+        try {
+            // Get port from config if defined, otherwise use default
+            $port = defined('DB_PORT') ? DB_PORT : 3306;
+            
+            // Create connection
+            $this->connection = new mysqli(
+                DB_SERVER, 
+                DB_USERNAME, 
+                DB_PASSWORD, 
+                DB_NAME,
+                $port
+            );
+            
+            // Check connection
+            if ($this->connection->connect_error) {
+                $this->lastError = "Database reconnection failed: " . $this->connection->connect_error;
+                throw new Exception($this->lastError);
+            }
+            
+            // Set charset
+            $this->connection->set_charset("utf8mb4");
+            $this->connected = true;
+            return true;
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+            $this->connection = null;
+            $this->connected = false;
+            return false;
         }
     }
     
@@ -241,61 +325,8 @@ class Database {
     }
 }
 
-/**
- * Legacy functions for backward compatibility
- */
-
-/**
- * Check if database connection is working
- * 
- * @param mysqli $conn - Database connection
- * @return bool - true if connected, false otherwise
- */
-function is_db_connected($conn) {
-    return ($conn && !$conn->connect_error);
-}
-
-/**
- * Get a database connection
- * 
- * @return mysqli|false - Database connection or false on failure
- */
-function getDbConnection() {
+// Register shutdown function to close connection automatically
+register_shutdown_function(function() {
     $db = Database::getInstance();
-    return $db->getConnection();
-}
-
-/**
- * Check if database and tables exist
- * 
- * @return bool - true if setup is complete, false otherwise
- */
-function isDatabaseSetup() {
-    $db = Database::getInstance();
-    return $db->isDatabaseSetup();
-}
-
-/**
- * Sanitize input data to prevent SQL injection
- * 
- * @param mysqli $conn - Database connection (kept for backward compatibility)
- * @param mixed $input - Input to sanitize (string or array)
- * @return mixed - Sanitized input
- */
-function sanitize($conn, $input) {
-    $db = Database::getInstance();
-    return $db->sanitize($input);
-}
-
-/**
- * Execute database queries safely with prepared statements
- * 
- * @param mysqli $conn - Database connection (kept for backward compatibility)
- * @param string $sql - SQL query with placeholders
- * @param array $params - Parameters to bind to the query
- * @return mysqli_result|bool - Query result or false on failure
- */
-function query($conn, $sql, $params = []) {
-    $db = Database::getInstance();
-    return $db->query($sql, $params);
-}
+    $db->close();
+});

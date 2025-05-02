@@ -56,7 +56,7 @@ include '_header.php';
                 <div class="card-body">
                     <h5 class="card-title"><?php echo htmlspecialchars($category['title']); ?></h5>
                     <p class="card-text"><?php echo htmlspecialchars($category['description']); ?></p>
-                    <a href="products.php?category=<?php echo $category['id']; ?>" class="btn btn-primary">View Products</a>
+                    <a href="/products?category=<?php echo $category['id']; ?>" class="btn btn-primary">View Products</a>
                 </div>
             </div>
         </div>

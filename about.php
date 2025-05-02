@@ -1,4 +1,5 @@
 <?php
+define('APP_INITIALIZED', true);
 //  log all error on screen
 require '_config.php';
 

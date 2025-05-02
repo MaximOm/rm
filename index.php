@@ -6,6 +6,7 @@ ini_set('error_reporting', E_ALL);
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 
+define('BASE_PATH', __DIR__);
 require_once 'includes/functions.php';
 
 // Get featured/latest products for home page
@@ -34,7 +35,10 @@ include '_index_header_body.php' ?>
                 <div class="hero-content">
                     <h1>Exquisite Marble Slabs</h1>
                     <p>Discover the beauty of natural stone for your spaces</p>
-                    <a href="products.php" class="btn btn-primary">Explore Collection</a>
+                    <div class="d-flex gap-3">
+                        <a href="/products" class="btn btn-primary btn-lg">View Our Catalog</a>
+                        <a href="/categories" class="btn btn-outline-light">Browse Categories</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -56,7 +60,7 @@ include 'index_on_scroll.php';
         <div class="row g-4">
             <?php foreach($main_categories as $category): ?>
             <div class="col-md-4">
-                <a href="categories.php?id=<?php echo $category['id']; ?>" class="category-card">
+                <a href="/categories?id=<?php echo $category['id']; ?>" class="category-card">
                     <div class="card h-100">
                         <?php if(!empty($category['image_path'])): ?>
                         <img src="<?php echo get_config('upload_url') . $category['image_path']; ?>" 
@@ -96,7 +100,7 @@ include 'section/presentation.php';
             <div class="col-lg-3 col-md-4 col-sm-6">
                 <div class="product-card">
                     <div class="product-image">
-                        <a href="product.php?id=<?php echo $product['slug']; ?>">
+                        <a href="/product?id=<?php echo $product['slug']; ?>">
                             <img src="<?php echo $product['image_url']; ?>" 
                                  alt="<?php echo $product['name']; ?>"
                                  class="img-fluid">
@@ -104,7 +108,7 @@ include 'section/presentation.php';
                     </div>
                     <div class="product-info p-3">
                         <h3 class="product-title h6">
-                            <a href="product.php?id=<?php echo $product['slug']; ?>">
+                            <a href="/product?id=<?php echo $product['slug']; ?>">
                                 <?php echo $product['name']; ?>
                             </a>
                         </h3>
@@ -122,7 +126,7 @@ include 'section/presentation.php';
         </div>
         
         <div class="text-center mt-5">
-            <a href="products.php" class="btn btn-primary">View All Products</a>
+            <a href="/products" class="btn btn-primary">View All Products</a>
         </div>
     </div>
 </section>

@@ -2,6 +2,27 @@
 <footer id="footer" class="footer_wrapper min-h-screen overflow-clip" data-aos="fade-up">
     <a href="#"><img class="logo" src="/images/rm_logo_2.svg" alt="Riphean Marble Logo" data-aos="zoom-in"></a>
 
+    <!-- Navigation Links -->
+    <div class="footer-nav" data-aos="fade-up" data-aos-delay="200">
+        <nav>
+            <ul class="list-unstyled d-flex flex-wrap justify-content-center gap-4 mb-4">
+                <li><a href="/products" class="text-white text-decoration-none">All Products</a></li>
+                <li><a href="/categories" class="text-white text-decoration-none">Browse Categories</a></li>
+                <?php
+                // Get main categories for footer
+                $footer_categories = get_categories();
+                foreach ($footer_categories as $category):
+                ?>
+                    <li>
+                        <a href="/products?category=<?php echo $category['id']; ?>" class="text-white text-decoration-none">
+                            <?php echo $category['name']; ?>
+                        </a>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        </nav>
+    </div>
+
     <!-- phone call , mail send and Social Icons with SVGs -->
     <div class="social-icons" data-aos="fade-right" data-aos-delay="400">
 
@@ -322,7 +343,7 @@
 
         async function submitForm(formData) {
             try {
-                const response = await fetch('/api/callback.php', {
+                const response = await fetch('/api/callback', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

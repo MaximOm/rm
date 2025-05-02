@@ -1,7 +1,8 @@
 <?php
 /**
  * Configuration File
- * All important variables and settings are defined here
+ * 
+ * Contains application settings and database credentials
  */
 
 // Prevent direct access to this file
@@ -16,15 +17,17 @@ $config = [
         'server' => 'localhost',
         'username' => 'root',
         'password' => 'root',
-        'name' => 'rm'
+        'name' => 'rm',
+        'port' => 3306
     ],
     
     // Website Configuration
     'site' => [
-        'name' => 'Riphean Marble',
-        'url' => 'https://rm',
+        'name' => 'RM',
+        'url' => 'http://rm/',
         'admin_email' => 'admin@example.com',
-        'version' => '1.0.0'
+        'version' => '1.0.0',
+        'debug' => true  // Set to false in production
     ],
     
     // File Paths
@@ -33,7 +36,8 @@ $config = [
         'assets' => $_SERVER['DOCUMENT_ROOT'] . '/assets',
         'uploads' => $_SERVER['DOCUMENT_ROOT'] . '/assets/img',
         'products_upload' => $_SERVER['DOCUMENT_ROOT'] . '/assets/img/products',
-        'categories_upload' => $_SERVER['DOCUMENT_ROOT'] . '/assets/img/categories'
+        'categories_upload' => $_SERVER['DOCUMENT_ROOT'] . '/assets/img/categories',
+        'product_images' => $_SERVER['DOCUMENT_ROOT'] . '/assets/img/products/images'
     ],
     
     // File URLs
@@ -95,11 +99,13 @@ define('DB_SERVER', $config['database']['server']);
 define('DB_USERNAME', $config['database']['username']);
 define('DB_PASSWORD', $config['database']['password']);
 define('DB_NAME', $config['database']['name']);
+define('DB_PORT', $config['database']['port']);
 
 // Website Configuration
 define('SITE_NAME', $config['site']['name']);
 define('SITE_URL', $config['site']['url']);
 define('ADMIN_EMAIL', $config['site']['admin_email']);
+define('APP_DEBUG', $config['site']['debug']);
 
 // File Paths
 define('ROOT_PATH', $config['paths']['root']);
@@ -202,4 +208,13 @@ function is_logged_in() {
 
 function is_admin() {
     return isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'admin';
+}
+
+// Debug function - only works when debug mode is enabled
+function debug($data) {
+    if (APP_DEBUG) {
+        echo '<pre>';
+        print_r($data);
+        echo '</pre>';
+    }
 }

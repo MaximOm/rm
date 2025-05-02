@@ -29,13 +29,13 @@
             <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
                 <h4 class="h5 mb-3">Quick Links</h4>
                 <ul class="list-unstyled footer-links">
-                    <li><a href="<?php echo get_config('base_url', ''); ?>/index.php" class="text-white text-decoration-none">Home</a></li>
-                    <li><a href="<?php echo get_config('base_url', ''); ?>/products.php" class="text-white text-decoration-none">Products</a></li>
-                    <li><a href="<?php echo get_config('base_url', ''); ?>/quarry.php" class="text-white text-decoration-none">Our Quarry</a></li>
-                    <li><a href="<?php echo get_config('base_url', ''); ?>/mission.php" class="text-white text-decoration-none">Our Mission</a></li>
-                    <li><a href="<?php echo get_config('base_url', ''); ?>/contacts.php" class="text-white text-decoration-none">Contact Us</a></li>
+                    <li><a href="/" class="text-white text-decoration-none">Home</a></li>
+                    <li><a href="/products" class="text-white text-decoration-none">Products</a></li>
+                    <li><a href="/quarry" class="text-white text-decoration-none">Our Quarry</a></li>
+                    <li><a href="/mission" class="text-white text-decoration-none">Our Mission</a></li>
+                    <li><a href="/contacts" class="text-white text-decoration-none">Contact Us</a></li>
                     <?php if(isset($_SESSION['user_id']) && $_SESSION['user_role'] == 'admin'): ?>
-                    <li><a href="<?php echo get_config('base_url', ''); ?>/admin/" class="text-white text-decoration-none">Admin Panel</a></li>
+                    <li><a href="/admin" class="text-white text-decoration-none">Admin Panel</a></li>
                     <?php endif; ?>
                 </ul>
             </div>
@@ -43,13 +43,15 @@
             <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
                 <h4 class="h5 mb-3">Product Categories</h4>
                 <ul class="list-unstyled footer-links">
+                    <li><a href="/products" class="text-white text-decoration-none">All Products</a></li>
+                    <li><a href="/categories" class="text-white text-decoration-none">Browse Categories</a></li>
                     <?php
                     // Get main categories for footer
                     $footer_categories = get_categories();
                     foreach ($footer_categories as $category):
                     ?>
                         <li>
-                            <a href="products.php?category=<?php echo $category['id']; ?>" class="text-white text-decoration-none">
+                            <a href="/products?category=<?php echo $category['id']; ?>" class="text-white text-decoration-none">
                                 <?php echo $category['name']; ?>
                             </a>
                         </li>
@@ -80,7 +82,7 @@
                 
                 <h4 class="h5 mt-4 mb-3">Newsletter</h4>
                 <p class="small">Subscribe to receive updates on new products and special offers.</p>
-                <form action="subscribe.php" method="POST" class="newsletter-form mt-3">
+                <form action="/api/subscribe" method="POST" class="newsletter-form mt-3">
                     <div class="input-group mb-3">
                         <input type="email" class="form-control" placeholder="Your Email" required name="email">
                         <button class="btn btn-primary" type="submit">Subscribe</button>
@@ -96,8 +98,8 @@
                 <p class="mb-0 small">&copy; <?php echo date('Y'); ?> <?php echo get_config('site_title', 'Marble Slabs'); ?>. All rights reserved.</p>
             </div>
             <div class="col-md-6 text-center text-md-end small">
-                <a href="<?php echo get_config('base_url', ''); ?>/privacy-policy.php" class="text-white text-decoration-none me-3">Privacy Policy</a>
-                <a href="<?php echo get_config('base_url', ''); ?>/terms-of-service.php" class="text-white text-decoration-none">Terms of Service</a>
+                <a href="/privacy-policy" class="text-white text-decoration-none me-3">Privacy Policy</a>
+                <a href="/terms-of-service" class="text-white text-decoration-none">Terms of Service</a>
             </div>
         </div>
     </div>

@@ -1,5 +1,3 @@
-
-
 <h3 class="mt-2 mb-4">Send messege for us</h3>
 <form id="contact-form" class="mt-2">
     <div class="form-group">
@@ -27,8 +25,13 @@
 <script>
     document.getElementById('contact-form').addEventListener('submit', function(e) {
         e.preventDefault();
-        var formData = new FormData(this);
-        fetch('send_email.php', {
+        submitForm();
+    });
+
+    function submitForm() {
+        var formData = new FormData(document.getElementById('contact-form'));
+
+        fetch('/api/send-email', {
             method: 'POST',
             body: formData
         })
@@ -52,5 +55,5 @@
                 statusMessage.className = 'error';
                 statusMessage.style.display = 'block';
             });
-    });
+    }
 </script>

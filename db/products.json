@@ -108,13 +108,6 @@
         "image": "images/products/block1/24 STACK 1.jpg"
     },
     {
-        "name": "Slab #24",
-        "sku": "b1s24",
-        "block": "block1",
-        "block_number": "1",
-        "image": "images/products/block1/24 STACK 1_small.jpg"
-    },
-    {
         "name": "Slab #25",
         "sku": "b1s25",
         "block": "block1",
@@ -148,13 +141,6 @@
         "block": "block1",
         "block_number": "1",
         "image": "images/products/block1/31 STACK 1.jpg"
-    },
-    {
-        "name": "Slab #31",
-        "sku": "b1s31",
-        "block": "block1",
-        "block_number": "1",
-        "image": "images/products/block1/31 STACK 1_small.jpg"
     },
     {
         "name": "Slab #32",
@@ -253,13 +239,6 @@
         "block": "block1",
         "block_number": "1",
         "image": "images/products/block1/49 STACK 1.jpg"
-    },
-    {
-        "name": "Slab #49",
-        "sku": "b1s49",
-        "block": "block1",
-        "block_number": "1",
-        "image": "images/products/block1/49 STACK 1_small.jpg"
     },
     {
         "name": "Slab #5",
@@ -602,14 +581,10 @@
         "sku": "b3s11",
         "block": "block3",
         "block_number": "3",
-        "image": "images/products/block3/11 STACK 3 .jpg"
-    },
-    {
-        "name": "Slab #11",
-        "sku": "b3s11",
-        "block": "block3",
-        "block_number": "3",
-        "image": "images/products/block3/11 STACK 3.jpg"
+        "image": "images/products/block3/11 STACK 3.jpg",
+        "extra_images": [
+            "images/products/block3/11-2 STACK 3 .jpg"
+        ]
     },
     {
         "name": "Slab #12",

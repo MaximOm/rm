@@ -1,128 +1,97 @@
 <?php
-// Define APP_INITIALIZED to access config
 define('APP_INITIALIZED', true);
+defined('BASE_PATH') or define('BASE_PATH', __DIR__);
 
-// Include initialization file
-require_once 'includes/init.php';
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-// Get products by category
-function getProductsByCategory($category_id = null) {
-    $conn = getDbConnection();
-    if (!$conn) {
-        return [];
-    }
-    
-    $sql = "SELECT p.*, c.title as category_name 
-            FROM products p 
-            LEFT JOIN categories c ON p.category_id = c.id";
-    
-    if ($category_id) {
-        $stmt = $conn->prepare($sql . " WHERE p.category_id = ? ORDER BY p.title");
-        $stmt->bind_param("i", $category_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-    } else {
-        $result = $conn->query($sql . " ORDER BY p.title");
-    }
-    
-    $products = [];
-    if ($result && $result->num_rows > 0) {
-        while($row = $result->fetch_assoc()) {
-            $products[] = $row;
-        }
-    }
-    
-    $conn->close();
-    return $products;
+require_once __DIR__ . '/includes/db.php';
+
+// Get all categories from DB
+$categories = [];
+$stmt = $pdo->query('SELECT name FROM categories');
+$categories = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+// Get selected category
+$selectedCategory = isset($_GET['block']) ? $_GET['block'] : null;
+
+// Fetch slabs from DB with category join and main image
+$slabs = [];
+if ($selectedCategory) {
+    $stmt = $pdo->prepare('SELECT p.*, c.name AS category_name, pi.image AS main_image FROM products p JOIN categories c ON p.category_id = c.id LEFT JOIN product_images pi ON pi.product_id = p.id AND pi.is_primary = 1 WHERE c.name = ?');
+    $stmt->execute([$selectedCategory]);
+    $slabs = $stmt->fetchAll();
+} else {
+    $stmt = $pdo->query('SELECT p.*, c.name AS category_name, pi.image AS main_image FROM products p JOIN categories c ON p.category_id = c.id LEFT JOIN product_images pi ON pi.product_id = p.id AND pi.is_primary = 1');
+    $slabs = $stmt->fetchAll();
 }
 
-// Get category info
-function getCategoryInfo($category_id) {
-    $conn = getDbConnection();
-    if (!$conn) {
-        return null;
+// Group slabs by category_name
+$slabsByCategory = [];
+foreach ($slabs as $slab) {
+    $category = $slab['category_name'] ?? '';
+    if ($category) {
+        $slabsByCategory[$category][] = $slab;
     }
-    
-    $stmt = $conn->prepare("SELECT * FROM categories WHERE id = ?");
-    $stmt->bind_param("i", $category_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $category = $result->fetch_assoc();
-    
-    $stmt->close();
-    $conn->close();
-    
-    return $category;
 }
 
-// Get category parameter
-$category_id = isset($_GET['category']) && is_numeric($_GET['category']) ? $_GET['category'] : null;
-$category = $category_id ? getCategoryInfo($category_id) : null;
-$products = getProductsByCategory($category_id);
-
-// Include header
 include '_header.php';
 ?>
-
 <div class="container mt-5 mb-5">
     <div class="row">
         <div class="col-md-12">
-            <?php if ($category): ?>
-                <h1 class="text-center mb-4"><?php echo htmlspecialchars($category['title']); ?></h1>
-                <?php if (!empty($category['description'])): ?>
-                    <p class="text-center mb-5"><?php echo htmlspecialchars($category['description']); ?></p>
-                <?php endif; ?>
-            <?php else: ?>
-                <h1 class="text-center mb-5">All Products</h1>
+            <h1 class="text-center mb-4">Marble Slabs</h1>
+            <p class="text-center mb-5">Browse by category and view available slabs.</p>
+        </div>
+    </div>
+    <div class="row mb-4">
+        <div class="col-12 text-center">
+            <?php foreach ($categories as $category): ?>
+                <a href="/products?block=<?php echo urlencode($category); ?>" class="btn btn-outline-primary m-1<?php if ($selectedCategory === $category) echo ' active'; ?>">
+                    <?php echo htmlspecialchars(ucfirst($category)); ?>
+                </a>
+            <?php endforeach; ?>
+        </div>
+    </div>
+    <?php if ($selectedCategory && isset($slabsByCategory[$selectedCategory])): ?>
+        <div class="row">
+            <div class="col-12 mb-3">
+                <h2 class="text-center">Slabs in <?php echo htmlspecialchars(ucfirst($selectedCategory)); ?></h2>
+            </div>
+            <?php foreach ($slabsByCategory[$selectedCategory] as $slab): ?>
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <a href="/product?sku=<?php echo urlencode($slab['slug']); ?>" style="text-decoration:none;color:inherit;">
+                            <div class="product-img-container" style="height: 200px; overflow: hidden;">
+                                <img src="<?php echo htmlspecialchars($slab['main_image'] ?? ''); ?>" alt="<?php echo htmlspecialchars($slab['name']); ?>" class="card-img-top" style="object-fit: cover; height: 100%; width: 100%;">
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title"><?php echo htmlspecialchars($slab['name']); ?></h5>
+                                <p class="card-text small">SKU: <?php echo htmlspecialchars($slab['slug']); ?></p>
+                                <p class="card-text small">Category: <?php echo htmlspecialchars($slab['category_name']); ?></p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+            <?php if (empty($slabsByCategory[$selectedCategory])): ?>
+                <div class="col-12 text-center">
+                    <p>No slabs found in this category.</p>
+                </div>
             <?php endif; ?>
         </div>
-    </div>
-    
-    <div class="row">
-        <?php foreach ($products as $product): ?>
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm">
-                <div class="product-img-container" style="height: 250px; overflow: hidden;">
-                    <?php if (!empty($product['main_image'])): ?>
-                        <img src="<?php echo htmlspecialchars($product['main_image']); ?>" alt="<?php echo htmlspecialchars($product['title']); ?>" class="card-img-top" style="object-fit: cover; height: 100%; width: 100%;">
-                    <?php else: ?>
-                        <div class="bg-light d-flex align-items-center justify-content-center" style="height: 100%;">
-                            <span class="text-muted">No image available</span>
-                        </div>
-                    <?php endif; ?>
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title"><?php echo htmlspecialchars($product['title']); ?></h5>
-                    <p class="card-text">
-                        <?php 
-                        if (!empty($product['short_description'])) {
-                            echo htmlspecialchars($product['short_description']);
-                        } else {
-                            echo substr(htmlspecialchars($product['description']), 0, 100) . '...';
-                        }
-                        ?>
-                    </p>
-                    <p class="text-muted small">Category: <?php echo htmlspecialchars($product['category_name']); ?></p>
-                    <a href="product.php?id=<?php echo $product['id']; ?>" class="btn btn-primary">View Details</a>
-                </div>
+        <div class="row mt-4">
+            <div class="col-12 text-center">
+                <a href="/products" class="btn btn-outline-secondary">Back to All Categories</a>
             </div>
         </div>
-        <?php endforeach; ?>
-        
-        <?php if (empty($products)): ?>
-        <div class="col-12 text-center">
-            <p>No products found in this category. Please check back later.</p>
+    <?php else: ?>
+        <div class="row">
+            <div class="col-12 text-center">
+                <p>Select a category to view its slabs.</p>
+            </div>
         </div>
-        <?php endif; ?>
-    </div>
-
-    <?php if ($category_id): ?>
-    <div class="row mt-4">
-        <div class="col-12 text-center">
-            <a href="categories.php" class="btn btn-outline-secondary">Back to Categories</a>
-        </div>
-    </div>
     <?php endif; ?>
 </div>
-
 <?php include '_footer.php'; ?>
